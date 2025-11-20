@@ -14,7 +14,7 @@ public class CANRangeSubsystem extends SubsystemBase{
   private CANrange m_canrange;
 
   public CANRangeSubsystem() {
-    m_canrange = new CANrange(SensorIDConstants.k_intakeCANRangeID, "rio");
+    m_canrange = new CANrange(SensorIDConstants.k_shootCANRangeID, "rio");
     m_canrange.getConfigurator().apply(ShootConfigs.SHOOT_CANRANGE_CONFIGURATION, 0.05);
   }
 

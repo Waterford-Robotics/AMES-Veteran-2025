@@ -1,7 +1,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,7 +13,6 @@ public class IntakeSubsystem extends SubsystemBase{
   private TalonFX m_centerer;
 
   public IntakeSubsystem() {
-    
     m_intake = new TalonFX(MotorConstants.k_intakeKrakenID);
     m_intake.getConfigurator().apply(IntakeConfigs.INTAKE_TALON_FX_CONFIGURATION, 0.05);
 
@@ -24,14 +22,16 @@ public class IntakeSubsystem extends SubsystemBase{
 
   public void intake() {
     m_intake.set(MotorConstants.k_intakeSpeed);
+    m_centerer.set(MotorConstants.k_centererSpeed);
   }
 
-  public void shootSpeed(double power) {
+  public void intakeSpeed(double power) {
     m_intake.set(power);
   }
 
-  public void stopShooter() {
+  public void stopIntake() {
     m_intake.set(0);
+    m_centerer.set(0);
   }
 
   public void periodic() {

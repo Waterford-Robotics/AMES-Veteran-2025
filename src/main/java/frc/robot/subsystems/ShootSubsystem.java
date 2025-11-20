@@ -1,9 +1,6 @@
-
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.ShootConfigs;
@@ -21,7 +18,7 @@ public class ShootSubsystem extends SubsystemBase{
 
     m_shooter.getConfigurator().apply(ShootConfigs.SHOOT_TALON_FX_CONFIGURATION, 0.05);
 
-    m_conveyor.getConfigurator().apply(ShootConfigs.SHOOT_TALON_FX_CONFIGURATION, 0.05);
+    m_conveyor.getConfigurator().apply(ShootConfigs.CONVEYOR_TALON_FX_CONFIGURATION, 0.05);
   }
 
   public void spinUp(){
@@ -30,10 +27,6 @@ public class ShootSubsystem extends SubsystemBase{
   public void shoot() {
     m_conveyor.set(MotorConstants.k_conveyorSpeed);
     m_shooter.set(MotorConstants.k_shooterSpeed);
-  }
-
-  public void shootSpeed(double power) {
-    m_shooter.set(power);
   }
 
   public void stopShooter() {
