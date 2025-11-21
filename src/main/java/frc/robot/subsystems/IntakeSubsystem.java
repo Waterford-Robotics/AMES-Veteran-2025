@@ -22,6 +22,9 @@ public class IntakeSubsystem extends SubsystemBase{
 
   public void intake() {
     m_intake.set(MotorConstants.k_intakeSpeed);
+  }
+
+  public void centerer() {
     m_centerer.set(MotorConstants.k_centererSpeed);
   }
 

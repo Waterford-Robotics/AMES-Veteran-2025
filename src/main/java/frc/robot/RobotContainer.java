@@ -25,7 +25,7 @@ public class RobotContainer {
   private final CANRangeSubsystem m_canRangeSubsystem = new CANRangeSubsystem();
   
   private final CommandXboxController m_driveController = new CommandXboxController(ControllerConstants.k_driverControllerPort);
-  private final CommandXboxController m_operatorController = new CommandXboxController(ControllerConstants.k_operatorControllerPort);
+  //private final CommandXboxController m_operatorController = new CommandXboxController(ControllerConstants.k_operatorControllerPort);
 
   public RobotContainer() {
     configureBindings();
@@ -35,19 +35,23 @@ public class RobotContainer {
 
   private void configureBindings() {
     //intake right trigger
-    new Trigger(() -> m_operatorController.getRawAxis(ControllerConstants.k_righttrig) > 0.05)
+    new Trigger(() -> m_driveController.getRawAxis(ControllerConstants.k_righttrig) > 0.05)
       .whileTrue(
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
       .whileTrue(
-        new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
-        .until(() -> m_canRangeSubsystem.getIsDetected()
-        ))
+        new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem)
+        .until(() -> m_canRangeSubsystem.getIsDetected()))
+      .whileTrue(
+        new InstantCommand(() -> m_shooterSubsystem.conveyor(), m_shooterSubsystem)
+        .until(() -> m_canRangeSubsystem.getIsDetected()))
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_intakeSubsystem)
-      );
+      )
+      .onFalse(
+        new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem));
 
     //spin up left trigger
-    new Trigger(() -> m_operatorController.getRawAxis(ControllerConstants.k_lefttrig)>0.05)
+    new Trigger(() -> m_driveController.getRawAxis(ControllerConstants.k_lefttrig)>0.05)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem))
       .onFalse(
@@ -55,15 +59,20 @@ public class RobotContainer {
       );
 
       //shoot right bumper
-      new JoystickButton(m_operatorController.getHID(), ControllerConstants.k_rightbump)
+      new JoystickButton(m_driveController.getHID(), ControllerConstants.k_rightbump)
       .onTrue(
-        new InstantCommand(() -> m_intakeSubsystem.intake(), m_shooterSubsystem)
+        new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
+      )
+      .onTrue(
+        new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem)
       )
       .onTrue(
         new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem)
       )
       .onFalse(
         new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem))
+      .onFalse(
+        new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem))
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_shooterSubsystem));
   }

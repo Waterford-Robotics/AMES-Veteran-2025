@@ -29,8 +29,15 @@ public class ShootSubsystem extends SubsystemBase{
     m_shooter.set(MotorConstants.k_shooterSpeed);
   }
 
+  public void conveyor(){
+    m_conveyor.set(MotorConstants.k_conveyorSpeed);
+  }
+
   public void stopShooter() {
     m_shooter.set(0);
+  }
+
+  public void stopConveyor() {
     m_conveyor.set(0);
   }
 

@@ -66,14 +66,14 @@ public class Constants {
     public static final double k_conveyorRampRate = 0.05;
     public static final double k_conveyorClosedMaxSpeed = 0.4;
     public static final int k_conveyorSupplyCurrentLimit = 60;
-    public static final double k_conveyorSpeed = 0.1;
+    public static final double k_conveyorSpeed = 0.12;
 
     //shooter
     public static final int k_shooterKrakenID = 21;
     public static final double k_shooterRampRate = 0.05;
     public static final double k_shooterClosedMaxSpeed = 0.4;
     public static final int k_shooterSupplyCurrentLimit = 60;
-    public static final double k_shooterSpeed = 0.1;
+    public static final double k_shooterSpeed = 0.285;
   }
   
   public static final class SensorIDConstants {

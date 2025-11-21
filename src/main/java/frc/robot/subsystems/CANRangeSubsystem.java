@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs.ShootConfigs;
 import frc.robot.Constants.SensorIDConstants;
-
 public class CANRangeSubsystem extends SubsystemBase{
   
   private CANrange m_canrange;
@@ -19,7 +18,7 @@ public class CANRangeSubsystem extends SubsystemBase{
   }
 
   public boolean getIsDetected() {
-    return m_canrange.getDistance().getValue().isNear(Inches.of(2.5), 0.9);
+    return m_canrange.getIsDetected().getValue();
 }
 
   public void periodic() {
