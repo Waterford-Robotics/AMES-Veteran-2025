@@ -34,6 +34,8 @@ public class IntakeSubsystem extends SubsystemBase{
 
   public void stopIntake() {
     m_intake.set(0);
+  }
+  public void stopCenterer() {
     m_centerer.set(0);
   }
 
