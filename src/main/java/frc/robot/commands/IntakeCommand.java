@@ -30,12 +30,9 @@ public class IntakeCommand extends Command {
     addRequirements(canRangeSubsystem);
   }
 
-  // Reset timer when the command starts executing
-  public void initialize() {
-
-  }
+  public void initialize() {}
   
-  // Actual command
+  // run the centerer and conveyor until canrange detects
   public void execute() {
     if(!m_canRangeSubsystem.getIsDetected()) {
       m_intakeSubsystem.centerer();
@@ -43,7 +40,7 @@ public class IntakeCommand extends Command {
     }
   }
 
-  // Stuff that happens when command is over
+  // when the command is over stop running the centerer and conveyors
   public void end(boolean interrupted) {
     m_intakeSubsystem.stopCenterer();
     m_shootSubsystem.stopConveyor();

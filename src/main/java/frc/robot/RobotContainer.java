@@ -8,8 +8,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -32,35 +30,45 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
-
     m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
   }
 
   private void configureBindings() {
-    //intake right trigger
+    //intake, conveyor, centerer — right trigger
     new Trigger(() -> m_driveController.getRawAxis(ControllerConstants.k_righttrig) > 0.05)
       .whileTrue(
-        new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
-      .whileTrue(new IntakeCommand(m_intakeSubsystem, m_shooterSubsystem, m_canRangeSubsystem)) 
+        new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
+        )
+      .whileTrue(
+        new IntakeCommand(m_intakeSubsystem, m_shooterSubsystem, m_canRangeSubsystem)
+        ) 
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_intakeSubsystem)
-      )
+        )
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
-      )
+        )
       .onFalse(
-        new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem));
+        new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem)
+    );
+    
+    //conveyor run in other direction — left bumper
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
+      .whileTrue(
+      new InstantCommand(() -> m_shooterSubsystem.anticonveyor(), m_shooterSubsystem)
+    );
 
-    //spin up left trigger
+    //spin up — left trigger
     new Trigger(() -> m_driveController.getRawAxis(ControllerConstants.k_lefttrig)>0.05)
       .whileTrue(
-        new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem))
+        new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
+      )
       .onFalse(
         new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem)
-      );
+    );
 
-      //shoot right bumper
-      new JoystickButton(m_driveController.getHID(), ControllerConstants.k_rightbump)
+      //shoot — right bumper
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_rightbump)
       .onTrue(
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
       )
@@ -71,11 +79,14 @@ public class RobotContainer {
         new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem)
       )
       .onFalse(
-        new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem))
+        new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem)
+      )
       .onFalse(
-        new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem))
+        new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem)
+      )
       .onFalse(
-        new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_shooterSubsystem));
+        new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_shooterSubsystem)
+    );
   }
 
   public Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveCommand(
