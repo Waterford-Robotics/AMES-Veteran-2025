@@ -40,8 +40,11 @@ public class RobotContainer {
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
         )
       .whileTrue(
-        new IntakeCommand(m_intakeSubsystem, m_shooterSubsystem, m_canRangeSubsystem)
+        new IntakeCommand(m_shooterSubsystem, m_canRangeSubsystem)
         ) 
+      .whileTrue(
+        new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem)
+      )
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_intakeSubsystem)
         )
@@ -52,14 +55,17 @@ public class RobotContainer {
         new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem)
     );
     
-    //conveyor run in other direction — left bumper
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
-      .whileTrue(
-      new InstantCommand(() -> m_shooterSubsystem.anticonveyor(), m_shooterSubsystem)
+    //centerer run in other direction — A
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_A)
+      .onTrue(
+      new InstantCommand(() -> m_intakeSubsystem.anticenterer(), m_shooterSubsystem))
+      .onFalse(
+        new InstantCommand(() -> m_intakeSubsystem.stopCenterer())
+      
     );
 
-    //spin up — left trigger
-    new Trigger(() -> m_driveController.getRawAxis(ControllerConstants.k_lefttrig)>0.05)
+    //spin up — left bumper
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
       )
@@ -86,6 +92,15 @@ public class RobotContainer {
       )
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_shooterSubsystem)
+    )
+    .onFalse(
+      new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
+    );
+
+    // Reset Gyro - Start Button
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_start)
+      .onTrue(
+        new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem)
     );
   }
 

@@ -48,18 +48,18 @@ public class Constants {
     public static final int k_supplyCurrentLimit = 40;
 
     //intake
-    public static final int k_intakeKrakenID = 0;
+    public static final int k_intakeKrakenID = 13;
     public static final double k_intakeRampRate = 0.05;
     public static final double k_intakeClosedMaxSpeed = 0.4;
     public static final int k_intakeSupplyCurrentLimit = 60;
-    public static final double k_intakeSpeed = 0.1;
+    public static final double k_intakeSpeed = 0.5;
 
     //centerer
-    public static final int k_centererKrakenID = 0;
+    public static final int k_centererKrakenID = 12;
     public static final double k_centererRampRate = 0.05;
     public static final double k_centererClosedMaxSpeed = 0.4;
     public static final int k_centererSupplyCurrentLimit = 60;
-    public static final double k_centererSpeed = 0.1;
+    public static final double k_centererSpeed = -0.1;
 
     //conveyor intake
     public static final int k_conveyorKrakenID = 11;
@@ -73,7 +73,7 @@ public class Constants {
     public static final double k_shooterRampRate = 0.05;
     public static final double k_shooterClosedMaxSpeed = 0.4;
     public static final int k_shooterSupplyCurrentLimit = 60;
-    public static final double k_shooterSpeed = 0.285;
+    public static final double k_shooterSpeed = 0.31;
   }
   
   public static final class SensorIDConstants {

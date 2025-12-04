@@ -12,16 +12,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class IntakeCommand extends Command {
 
   // Uses Elevator and Subsystems
-  IntakeSubsystem m_intakeSubsystem;
+
   ShootSubsystem m_shootSubsystem;
   CANRangeSubsystem m_canRangeSubsystem;
 
   // Constructor
-  public IntakeCommand(IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, CANRangeSubsystem canRangeSubsystem) {
+  public IntakeCommand(ShootSubsystem shootSubsystem, CANRangeSubsystem canRangeSubsystem) {
         
     // Definitions and setting parameters are equal to members!
-    m_intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
 
     m_shootSubsystem = shootSubsystem;
     addRequirements(shootSubsystem);
@@ -35,14 +33,12 @@ public class IntakeCommand extends Command {
   // run the centerer and conveyor until canrange detects
   public void execute() {
     if(!m_canRangeSubsystem.getIsDetected()) {
-      m_intakeSubsystem.centerer();
       m_shootSubsystem.conveyor();
     }
   }
 
   // when the command is over stop running the centerer and conveyors
   public void end(boolean interrupted) {
-    m_intakeSubsystem.stopCenterer();
     m_shootSubsystem.stopConveyor();
   }
 
