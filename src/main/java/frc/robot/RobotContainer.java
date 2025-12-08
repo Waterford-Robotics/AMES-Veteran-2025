@@ -64,13 +64,14 @@ public class RobotContainer {
         new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem)
     );
     
-    //centerer run in other direction — A
+    //unintake run in other direction — A
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_A)
       .onTrue(
-      new InstantCommand(() -> m_intakeSubsystem.anticenterer(), m_shooterSubsystem))
+      new InstantCommand(() -> m_intakeSubsystem.anti(), m_shooterSubsystem))
+      .onFalse(
+        new InstantCommand(() -> m_intakeSubsystem.stopIntake()))
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopCenterer())
-      
     );
 
     //spin up — left bumper
@@ -107,8 +108,8 @@ public class RobotContainer {
     );
 
 
-    // Reset Gyro - Start Button
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_start)
+    // Reset Gyro - X
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_X)
       .onTrue(
         new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem)
     );

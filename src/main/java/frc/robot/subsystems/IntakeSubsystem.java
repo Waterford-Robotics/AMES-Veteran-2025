@@ -28,8 +28,9 @@ public class IntakeSubsystem extends SubsystemBase{
     m_centerer.set(MotorConstants.k_centererSpeed);
   }
 
-  public void anticenterer() {
+  public void anti() {
     m_centerer.set(-MotorConstants.k_centererSpeed);
+    m_intake.set(-MotorConstants.k_intakeSpeed);
   }
 
   public void intakeSpeed(double power) {
