@@ -21,6 +21,7 @@ import frc.robot.subsystems.CANRangeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.WoodSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -28,6 +29,7 @@ public class RobotContainer {
   public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
   public final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public final ShootSubsystem m_shooterSubsystem = new ShootSubsystem();
+  public final WoodSubsystem m_woodSubsystem = new WoodSubsystem();
   private final CANRangeSubsystem m_canRangeSubsystem = new CANRangeSubsystem();
   
   private final CommandXboxController m_driveController = new CommandXboxController(ControllerConstants.k_driverControllerPort);
@@ -69,10 +71,24 @@ public class RobotContainer {
       .onTrue(
       new InstantCommand(() -> m_intakeSubsystem.anti(), m_shooterSubsystem))
       .onFalse(
-        new InstantCommand(() -> m_intakeSubsystem.stopIntake()))
+        new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_intakeSubsystem))
       .onFalse(
-        new InstantCommand(() -> m_intakeSubsystem.stopCenterer())
+        new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
     );
+    //Wood Shooter B and 
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_B)
+      .onTrue(
+        new InstantCommand(()-> m_woodSubsystem.runWood(1), m_woodSubsystem))
+      .onFalse(
+        new InstantCommand(()-> m_woodSubsystem.stopWood(), m_woodSubsystem)
+      );
+
+      new JoystickButton(m_driveController.getHID(), ControllerConstants.k_Y)
+      .onTrue(
+        new InstantCommand(()-> m_woodSubsystem.runWood(-1), m_woodSubsystem))
+      .onFalse(
+        new InstantCommand(()-> m_woodSubsystem.stopWood(), m_woodSubsystem)
+      );
 
     //spin up — left bumper
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
