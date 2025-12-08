@@ -5,9 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -19,6 +22,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 public class RobotContainer {
   public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
   public final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
@@ -28,9 +33,13 @@ public class RobotContainer {
   private final CommandXboxController m_driveController = new CommandXboxController(ControllerConstants.k_driverControllerPort);
   //private final CommandXboxController m_operatorController = new CommandXboxController(ControllerConstants.k_operatorControllerPort);
 
+
   public RobotContainer() {
     configureBindings();
     m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
+    NamedCommands.registerCommand("Rev", AutoRevCommand);
+    NamedCommands.registerCommand("Shoot", AutoShootCommand);
+    NamedCommands.registerCommand("Halt Shoot", AutoShootHaltCommand);
   }
 
   private void configureBindings() {
@@ -97,6 +106,7 @@ public class RobotContainer {
       new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
     );
 
+
     // Reset Gyro - Start Button
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_start)
       .onTrue(
@@ -111,6 +121,23 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return m_swerveSubsystem.getAutonomousCommand("TripleShoot");
   }
+
+  SequentialCommandGroup AutoRevCommand = new SequentialCommandGroup(
+    new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
+  );
+
+  SequentialCommandGroup AutoShootCommand = new SequentialCommandGroup(
+    new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem),
+    new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem),
+    new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem)
+  );
+
+  SequentialCommandGroup AutoShootHaltCommand = new SequentialCommandGroup(
+    new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem),
+    new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem),
+    new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_shooterSubsystem),
+    new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
+  );
 }
