@@ -69,9 +69,9 @@ public class RobotContainer {
       .onTrue(
       new InstantCommand(() -> m_intakeSubsystem.anti(), m_shooterSubsystem))
       .onFalse(
-        new InstantCommand(() -> m_intakeSubsystem.stopIntake()))
+        new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_intakeSubsystem))
       .onFalse(
-        new InstantCommand(() -> m_intakeSubsystem.stopCenterer())
+        new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
     );
 
     //spin up — left bumper

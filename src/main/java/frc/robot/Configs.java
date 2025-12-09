@@ -10,13 +10,14 @@ import frc.robot.Constants.MotorConstants;
 
 public class Configs {
   public static final class IntakeConfigs {
-    // Intake Kraken x60
+    // Intake Kraken x44
     public static final TalonFXConfiguration INTAKE_TALON_FX_CONFIGURATION = new TalonFXConfiguration();
     public static final TalonFXConfiguration CENTERER_TALON_FX_CONFIGURATION = new TalonFXConfiguration();
+    public static final TalonFXConfiguration PUSHER_TALON_FX_CONFIGURATION = new TalonFXConfiguration();
     static{
     /*
       ********************************************
-      **    INTAKE KRAKEN x60 CONFIGURATIONS    **
+      **    INTAKE KRAKEN x44 CONFIGURATIONS    **
       ********************************************
     */
 
@@ -27,7 +28,7 @@ public class Configs {
     INTAKE_TALON_FX_CONFIGURATION.CurrentLimits.SupplyCurrentLimit = MotorConstants.k_intakeSupplyCurrentLimit;
     /*
       ********************************************
-      **    CENTERER KRAKEN x60 CONFIGURATIONS    **
+      **    CENTERER KRAKEN x44 CONFIGURATIONS    **
       ********************************************
     */
 
@@ -35,7 +36,19 @@ public class Configs {
     CENTERER_TALON_FX_CONFIGURATION.MotorOutput.PeakForwardDutyCycle = MotorConstants.k_centererClosedMaxSpeed;
     CENTERER_TALON_FX_CONFIGURATION.MotorOutput.PeakReverseDutyCycle = -MotorConstants.k_centererClosedMaxSpeed;
     CENTERER_TALON_FX_CONFIGURATION.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    CENTERER_TALON_FX_CONFIGURATION.CurrentLimits.SupplyCurrentLimit = MotorConstants.k_centererSupplyCurrentLimit;  
+    CENTERER_TALON_FX_CONFIGURATION.CurrentLimits.SupplyCurrentLimit = MotorConstants.k_centererSupplyCurrentLimit;
+    
+    /*
+      ********************************************
+      **    PUSHER KRAKEN x44 CONFIGURATIONS    **
+      ********************************************
+    */
+
+    PUSHER_TALON_FX_CONFIGURATION.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = MotorConstants.k_centererRampRate;
+    PUSHER_TALON_FX_CONFIGURATION.MotorOutput.PeakForwardDutyCycle = MotorConstants.k_centererClosedMaxSpeed;
+    PUSHER_TALON_FX_CONFIGURATION.MotorOutput.PeakReverseDutyCycle = -MotorConstants.k_centererClosedMaxSpeed;
+    PUSHER_TALON_FX_CONFIGURATION.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    PUSHER_TALON_FX_CONFIGURATION.CurrentLimits.SupplyCurrentLimit = MotorConstants.k_centererSupplyCurrentLimit;  
   }
 }
   
