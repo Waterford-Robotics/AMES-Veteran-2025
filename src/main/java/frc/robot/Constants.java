@@ -47,6 +47,10 @@ public class Constants {
   public static final class MotorConstants{
     public static final int k_supplyCurrentLimit = 40;
 
+    //Wood
+    public static final double k_woodSpeed = 0.4;
+    public static final int k_woodID= 2;
+
     //intake
     public static final int k_intakeKrakenID = 12;
     public static final double k_intakeRampRate = 0.05;
