@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.CANRangeSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 

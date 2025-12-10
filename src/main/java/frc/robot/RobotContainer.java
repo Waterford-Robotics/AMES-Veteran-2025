@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -33,8 +34,10 @@ public class RobotContainer {
   private final CANRangeSubsystem m_canRangeSubsystem = new CANRangeSubsystem();
   
   private final CommandXboxController m_driveController = new CommandXboxController(ControllerConstants.k_driverControllerPort);
-  //private final CommandXboxController m_operatorController = new CommandXboxController(ControllerConstants.k_operatorControllerPort);
+  private final CommandXboxController m_operatorController = new CommandXboxController(ControllerConstants.k_operatorControllerPort);
 
+  double k_autoWait;
+  SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
   public RobotContainer() {
     configureBindings();
@@ -42,6 +45,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Rev", AutoRevCommand);
     NamedCommands.registerCommand("Shoot", AutoShootCommand);
     NamedCommands.registerCommand("Halt Shoot", AutoShootHaltCommand);
+
+    k_autoWait = SmartDashboard.getNumber("Auto Wait Time", 0);
+    m_chooser.addOption("Triple Shoot Short", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Short"));
+    m_chooser.addOption("Triple Shoot Long", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Long"));
   }
 
   private void configureBindings() {
@@ -66,7 +73,7 @@ public class RobotContainer {
         new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem)
     );
     
-    //unintake run in other direction — A
+    // unintake run in other direction — A
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_A)
       .onTrue(
       new InstantCommand(() -> m_intakeSubsystem.anti(), m_shooterSubsystem))
@@ -75,7 +82,7 @@ public class RobotContainer {
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
     );
-    //Wood Shooter B and 
+    // Wood Shooter B and  
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_B)
       .onTrue(
         new InstantCommand(()-> m_woodSubsystem.runWood(1), m_woodSubsystem))
@@ -90,7 +97,7 @@ public class RobotContainer {
         new InstantCommand(()-> m_woodSubsystem.stopWood(), m_woodSubsystem)
       );
 
-    //spin up — left bumper
+    //spin up — left bumper (operator)
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
@@ -99,7 +106,7 @@ public class RobotContainer {
         new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem)
     );
 
-      //shoot — right bumper
+    //shoot — right bumper (operator)
     new JoystickButton(m_driveController.getHID(), ControllerConstants.k_rightbump)
       .onTrue(
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
@@ -138,7 +145,10 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand() {
-    return m_swerveSubsystem.getAutonomousCommand("TripleShoot");
+    return new SequentialCommandGroup(
+      new WaitCommand(k_autoWait),
+      m_swerveSubsystem.getAutonomousCommand("TripleShoot Short")
+    );
   }
 
   SequentialCommandGroup AutoRevCommand = new SequentialCommandGroup(
