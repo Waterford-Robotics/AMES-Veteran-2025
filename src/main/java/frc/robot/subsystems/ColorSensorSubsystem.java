@@ -6,6 +6,16 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.wpilibj.I2C;
+// import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+// import edu.wpi.first.wpilibj2.command.Command;
+
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
+
 public class ColorSensorSubsystem extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -18,6 +28,7 @@ public class ColorSensorSubsystem extends SubsystemBase {
   private  Color kOrangeTarget = new Color("#FF7B00");//#FF7B00
   double averageR, averageG, averageB;
   int tickingForAvg=0;
+  public String colorString = new String();
 
   public ColorSensorSubsystem() {
     m_colorMatcher.addColorMatch(kBlueTarget);
@@ -31,33 +42,33 @@ public class ColorSensorSubsystem extends SubsystemBase {
   public Color getDetectedColor(){
     return m_colorSensor.getColor();
   }
-  public Color getClosestColor(){
-    return m_colorMatcher.matchClosestColor(this.getDesctedColor());
+  public ColorMatchResult getClosestColor(){
+    return m_colorMatcher.matchClosestColor(this.getDetectedColor());
   }
 
 
   @Override
   public void periodic() {
-    if (this.getClosestColor == kBlueTarget) {
+    if (this.getClosestColor().color == kBlueTarget) {
       colorString = "Blue";
-    } else if (this.getClosestColor == kRedTarget) {
+    } else if (this.getClosestColor().color == kRedTarget) {
       colorString = "Red";
-    } else if (this.getClosestColor == kGreenTarget) {
+    } else if (this.getClosestColor().color == kGreenTarget) {
       colorString = "Green";
-    } else if (this.getClosestColor == kYellowTarget) {
+    } else if (this.getClosestColor().color == kYellowTarget) {
       colorString = "Yellow";
-    }else if (this.getClosestColor == kPurpleTarget) {
+    }else if (this.getClosestColor().color == kPurpleTarget) {
       colorString = "Purple";
-    }else if (this.getClosestColor == kOrangeTarget) {
+    }else if (this.getClosestColor().color == kOrangeTarget) {
       colorString = "Orange";
     }else {
       colorString = "Unknown";
     }
 
     if(tickingForAvg==0){
-      averageR = detectedColor.red;
-      averageG = detectedColor.green;
-      averageB = detectedColor.blue;
+      averageR = this.getClosestColor().color.red;
+      averageG = this.getClosestColor().color.green;
+      averageB = this.getClosestColor().color.blue;
 
       m_colorMatcher.addColorMatch(kBlueTarget);
       m_colorMatcher.addColorMatch(kGreenTarget);
@@ -66,28 +77,28 @@ public class ColorSensorSubsystem extends SubsystemBase {
       m_colorMatcher.addColorMatch(kPurpleTarget);
       m_colorMatcher.addColorMatch(kOrangeTarget);
     }else if(tickingForAvg==1){
-      averageR=(averageR+detectedColor.red)/2;
-      averageG=(averageG+detectedColor.green)/2;
-      averageB=(averageB+detectedColor.blue)/2;
+      averageR=(averageR+this.getClosestColor().color.red)/2;
+      averageG=(averageG+this.getClosestColor().color.green)/2;
+      averageB=(averageB+this.getClosestColor().color.blue)/2;
     }else if(tickingForAvg==3){
       tickingForAvg=1;
     }
     tickingForAvg++;
 
-    if(controller.getRawButton(4)){
-      kRedTarget = new Color(averageR, averageG, averageB);
-    }
+    // if(controller.getRawButton(4)){
+    //   kRedTarget = new Color(averageR, averageG, averageB);
+    // }
 
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
+    SmartDashboard.putNumber("Red", this.getClosestColor().color.red);
+    SmartDashboard.putNumber("Green", this.getClosestColor().color.green);
+    SmartDashboard.putNumber("Blue", this.getClosestColor().color.blue);
 
     String confidence;
-    if(match.confidence<0.25){
+    if(this.getClosestColor().confidence<0.25){
       confidence = new String("not confident");
-    }else if(match.confidence<0.5){
+    }else if(this.getClosestColor().confidence<0.5){
       confidence = new String("not very confident");
-    }else if(match.confidence<0.75){
+    }else if(this.getClosestColor().confidence<0.75){
       confidence = new String("decently confident");
     }else{
       confidence = new String("very confident");

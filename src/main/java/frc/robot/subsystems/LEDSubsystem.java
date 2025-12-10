@@ -1,11 +1,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
-   Spark m_blinkin;
+    Spark m_blinkin;
+    ColorSensorSubsystem m_sensor = new ColorSensorSubsystem();
 
     public LEDSubsystem() {
         //enter port constant
@@ -51,7 +52,7 @@ public class LEDSubsystem extends SubsystemBase {
     //need color sensor subsystem stuffs
 
     public void periodic() {
-       String color = SmartDashboard.getString("DetectedColor", "None");
+       String color = m_sensor.colorString;
        
        if (color.equals("Red")) {
         setRed();
@@ -70,6 +71,9 @@ public class LEDSubsystem extends SubsystemBase {
        }
        else if (color.equals("Purple")) {
         setPurple();
+       }
+       else if(color.equals("Unknown")){
+        setTwinklesOcean();
        }
        else {
         turnOff();
