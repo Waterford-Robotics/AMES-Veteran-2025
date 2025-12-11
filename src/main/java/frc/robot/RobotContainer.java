@@ -100,7 +100,7 @@ public class RobotContainer {
       );
 
     //spin up — left bumper (operator)
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
+    new JoystickButton(m_operatorController.getHID(), ControllerConstants.k_leftbump)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
       )
@@ -109,7 +109,7 @@ public class RobotContainer {
     );
 
     //shoot — right bumper (operator)
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_rightbump)
+    new JoystickButton(m_operatorController.getHID(), ControllerConstants.k_rightbump)
       .onTrue(
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
       )
@@ -160,13 +160,15 @@ public class RobotContainer {
   SequentialCommandGroup AutoShootCommand = new SequentialCommandGroup(
     new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem),
     new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem),
-    new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem)
+    new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem),
+    new InstantCommand(() -> m_woodSubsystem.runWood(1), m_woodSubsystem)
   );
 
   SequentialCommandGroup AutoShootHaltCommand = new SequentialCommandGroup(
     new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem),
     new InstantCommand(() -> m_shooterSubsystem.stopConveyor(), m_shooterSubsystem),
     new InstantCommand(() -> m_intakeSubsystem.stopIntake(), m_shooterSubsystem),
-    new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
+    new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem),
+    new InstantCommand(() -> m_woodSubsystem.runWood(-1), m_woodSubsystem)
   );
 }
