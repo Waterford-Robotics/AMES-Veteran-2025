@@ -100,7 +100,7 @@ public class RobotContainer {
       );
 
     //spin up — left bumper (operator)
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
+    new JoystickButton(m_operatorController.getHID(), ControllerConstants.k_leftbump)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem)
       )
@@ -109,7 +109,7 @@ public class RobotContainer {
     );
 
     //shoot — right bumper (operator)
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_rightbump)
+    new JoystickButton(m_operatorController.getHID(), ControllerConstants.k_rightbump)
       .onTrue(
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem)
       )
