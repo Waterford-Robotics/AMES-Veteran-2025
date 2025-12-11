@@ -20,6 +20,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.CANRangeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.WoodSubsystem;
@@ -32,7 +33,8 @@ public class RobotContainer {
   public final ShootSubsystem m_shooterSubsystem = new ShootSubsystem();
   public final WoodSubsystem m_woodSubsystem = new WoodSubsystem();
   private final CANRangeSubsystem m_canRangeSubsystem = new CANRangeSubsystem();
-  
+  private final LEDSubsystem m_LedSubsystem = new LEDSubsystem();
+
   private final CommandXboxController m_driveController = new CommandXboxController(ControllerConstants.k_driverControllerPort);
   private final CommandXboxController m_operatorController = new CommandXboxController(ControllerConstants.k_operatorControllerPort);
 

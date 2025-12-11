@@ -10,7 +10,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     public LEDSubsystem() {
         //enter port constant
-        m_blinkin = new Spark(0);
+        m_blinkin = new Spark(1);
     }
     
     
@@ -72,7 +72,7 @@ public class LEDSubsystem extends SubsystemBase {
        else if (color.equals("Purple")) {
         setPurple();
        }
-       else if(color.equals("Unknown")){
+       else if(color.equals("")){
         setTwinklesOcean();
        }
        else {
