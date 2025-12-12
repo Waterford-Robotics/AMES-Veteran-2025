@@ -84,16 +84,18 @@ public class RobotContainer {
       .onFalse(
         new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
     );
-    // Wood Shooter B and  
-    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_B)
-      .onTrue(
+
+    // Wood intake left trig
+    new Trigger(() -> m_driveController.getRawAxis(ControllerConstants.k_lefttrig) > 0.05)
+      .whileTrue(
         new InstantCommand(()-> m_woodSubsystem.runWood(1), m_woodSubsystem))
       .onFalse(
         new InstantCommand(()-> m_woodSubsystem.stopWood(), m_woodSubsystem)
       );
 
-      new JoystickButton(m_driveController.getHID(), ControllerConstants.k_Y)
-      .onTrue(
+    // wood shooter left bump
+    new JoystickButton(m_driveController.getHID(), ControllerConstants.k_leftbump)
+      .whileTrue(
         new InstantCommand(()-> m_woodSubsystem.runWood(-1), m_woodSubsystem))
       .onFalse(
         new InstantCommand(()-> m_woodSubsystem.stopWood(), m_woodSubsystem)
