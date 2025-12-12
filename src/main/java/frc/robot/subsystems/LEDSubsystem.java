@@ -40,8 +40,8 @@ public class LEDSubsystem extends SubsystemBase {
         m_blinkin.set(0.91);
     }
 
-    public void setTwinklesOcean() {
-        m_blinkin.set(-0.51);
+    public void setFireMedium() {
+        m_blinkin.set(-0.59);
     }
 
     public void turnOff() {
@@ -64,7 +64,7 @@ public class LEDSubsystem extends SubsystemBase {
         setYellow();
        }
        else if (color.equals("Green")) {
-        setGreen();
+        setFireMedium();
        }
        else if (color.equals("Blue")) {
         setBlue();
@@ -72,8 +72,8 @@ public class LEDSubsystem extends SubsystemBase {
        else if (color.equals("Purple")) {
         setPurple();
        }
-       else if(color.equals("")){
-        setTwinklesOcean();
+       else if(color.equals("Unknown")){
+        setGreen();
        }
        else {
         turnOff();

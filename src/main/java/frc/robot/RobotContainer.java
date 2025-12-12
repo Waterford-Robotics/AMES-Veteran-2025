@@ -48,9 +48,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot", AutoShootCommand);
     NamedCommands.registerCommand("Halt Shoot", AutoShootHaltCommand);
 
-    k_autoWait = SmartDashboard.getNumber("Auto Wait Time", 0);
+    SmartDashboard.putNumber("Auto Wait Time", 0);
     m_chooser.addOption("Triple Shoot Short", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Short"));
-    m_chooser.addOption("Triple Shoot Long", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Long"));
+    m_chooser.addOption("Triple Shoot Leave", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Leave"));
+    SmartDashboard.putData("AutoMode", m_chooser);
   }
 
   private void configureBindings() {
@@ -121,6 +122,9 @@ public class RobotContainer {
       .onTrue(
         new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem)
       )
+      .onTrue(
+        new InstantCommand(() -> m_woodSubsystem.runWood(-1), m_woodSubsystem)
+      )
       .onFalse(
         new InstantCommand(() -> m_shooterSubsystem.stopShooter(), m_shooterSubsystem)
       )
@@ -132,6 +136,9 @@ public class RobotContainer {
     )
     .onFalse(
       new InstantCommand(() -> m_intakeSubsystem.stopCenterer(), m_intakeSubsystem)
+    )
+    .onFalse(
+      new InstantCommand(() -> m_woodSubsystem.stopWood(), m_woodSubsystem)
     );
 
 
@@ -148,10 +155,11 @@ public class RobotContainer {
     () -> m_driveController.getRightX() * DriveConstants.k_turnRate);
 
 
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand(){
+    k_autoWait = SmartDashboard.getNumber("Auto Wait Time", 0);
     return new SequentialCommandGroup(
       new WaitCommand(k_autoWait),
-      m_swerveSubsystem.getAutonomousCommand("TripleShoot Short")
+      m_chooser.getSelected()
     );
   }
 

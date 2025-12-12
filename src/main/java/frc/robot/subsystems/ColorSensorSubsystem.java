@@ -53,7 +53,7 @@ public class ColorSensorSubsystem extends SubsystemBase {
       colorString = "Blue";
     } else if (this.getClosestColor().color == kRedTarget) {
       colorString = "Red";
-    } else if (this.getClosestColor().color == kGreenTarget) {
+    } else if (this.getClosestColor().color == kGreenTarget && this.getClosestColor().confidence > 0.5 && this.getClosestColor().confidence < 0.75) {
       colorString = "Green";
     } else if (this.getClosestColor().color == kYellowTarget) {
       colorString = "Yellow";
