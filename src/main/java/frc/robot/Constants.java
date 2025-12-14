@@ -78,6 +78,7 @@ public class Constants {
     public static final double k_shooterClosedMaxSpeed = 0.4;
     public static final int k_shooterSupplyCurrentLimit = 60;
     public static final double k_shooterSpeed = 0.31;
+    public static final double k_fastShooterSpeed = 0.67;
   }
   
   public static final class SensorIDConstants {

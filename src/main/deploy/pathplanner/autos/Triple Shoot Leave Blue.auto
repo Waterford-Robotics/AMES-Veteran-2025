@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Long Forward"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Rev"
@@ -38,6 +32,12 @@
           "type": "named",
           "data": {
             "name": "Halt Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Leave Path Blue"
           }
         }
       ]

@@ -8,7 +8,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -47,10 +46,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("Rev", AutoRevCommand);
     NamedCommands.registerCommand("Shoot", AutoShootCommand);
     NamedCommands.registerCommand("Halt Shoot", AutoShootHaltCommand);
+    NamedCommands.registerCommand("Faster Shoot", AutoFastShootCommand);
 
     SmartDashboard.putNumber("Auto Wait Time", 0);
-    m_chooser.addOption("Triple Shoot Short", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Short"));
-    m_chooser.addOption("Triple Shoot Leave", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Leave"));
+    m_chooser.addOption("Triple Shoot Wait", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Short Red"));
+    m_chooser.addOption("Shake and Bake Blue", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Leave Blue"));
+    m_chooser.addOption("Shake and Bake Red", m_swerveSubsystem.getAutonomousCommand("Triple Shoot Leave Red"));
+    m_chooser.addOption("Side Shoot Red", m_swerveSubsystem.getAutonomousCommand("Side Shoot Red"));
+    m_chooser.addOption("Side Shoot Blue", m_swerveSubsystem.getAutonomousCommand("Side Shoot Blue"));
     SmartDashboard.putData("AutoMode", m_chooser);
   }
 
@@ -172,6 +175,12 @@ public class RobotContainer {
     new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem),
     new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem),
     new InstantCommand(() -> m_woodSubsystem.runWood(-1), m_woodSubsystem)
+  );
+
+  SequentialCommandGroup AutoFastShootCommand = new SequentialCommandGroup(
+    new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem),
+    new InstantCommand(() -> m_intakeSubsystem.centerer(), m_intakeSubsystem),
+    new InstantCommand(() -> m_shooterSubsystem.shootFaster(), m_shooterSubsystem)
   );
 
   SequentialCommandGroup AutoShootHaltCommand = new SequentialCommandGroup(
