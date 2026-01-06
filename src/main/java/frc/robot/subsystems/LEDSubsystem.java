@@ -64,7 +64,7 @@ public class LEDSubsystem extends SubsystemBase {
         setYellow();
        }
        else if (color.equals("Green")) {
-        setFireMedium();
+        setGreen();
        }
        else if (color.equals("Blue")) {
         setBlue();
@@ -72,8 +72,8 @@ public class LEDSubsystem extends SubsystemBase {
        else if (color.equals("Purple")) {
         setPurple();
        }
-       else if(color.equals("Unknown")){
-        setGreen();
+       else if(color.equals("Empty")){
+        setFireMedium();
        }
        else {
         turnOff();
